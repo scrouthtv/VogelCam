@@ -23,6 +23,28 @@ function reloadList() {
 	xhttp.send();
 }
 
+//function swapCells(a, b) {
+// still wip, does not work because I can't write to the DOM structure.
+// to make this happen, Id have to basically move the td nodes
+// but then there wouldn't be any animation
+// the animation would be another table on top that
+// is floating and has this one column
+// and is attached to the mouse
+	//const table = document.getElementById("filelist").rows;
+	//for (i = 0; i < table.length; i++) {
+		//var row = table[i].cells;
+		//console.log(row[a]);
+		//console.log(row[b])
+		//var tmp = row[a];
+		////console.log(tmp);
+		//row[a] = row[b];
+		//row[b] = tmp;
+		//console.log(row[a]);
+		//console.log(row[b])
+		//console.log(row);
+	//}
+//}
+
 function setTableRow(row, data) {
 	currentOrder.forEach(col => {
 		var cell = row.insertCell(-1);

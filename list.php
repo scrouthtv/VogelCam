@@ -6,7 +6,7 @@ $data = array();
 
 foreach ($files as $index => $file) {
 	if ($file == "." || $file == "..") continue;
-	if ($index > rand(3, 5)) continue;
+	if ($index > 10) continue;
 	$path = realpath($FOLDER . "/" . $file);
 	//echo "<br />";
 	//echo "file:" . $file . "<br/>";
