@@ -10,7 +10,11 @@ function reloadList() {
 			const table = document.getElementById("filelist");
 
 			var removed = currentData.filter(compareDataRow(data));
-			removed.forEach(remove => table.deleteRow(idInTable(remove.name)));
+			removed.forEach(remove => {
+				console.log(remove.name);
+				console.log(idInTable(remove.name));
+				table.deleteRow(idInTable(remove.name));
+			});
 
 			var added = data.filter(compareDataRow(currentData));
 			added.forEach(add => {
@@ -54,7 +58,26 @@ function setTableRow(row, data) {
 		cell.appendChild(document.createTextNode(data[col]));
 		cell.classList.add("entry-" + col);
 	});
+	var cell = row.insertCell(-1);
+	var a = document.createElement("a");
+	a.appendChild(document.createTextNode("[x]"));
+	a.href = "javascript:deleteFile('" + data.name + "');";
+	cell.appendChild(a);
 	return row;
+}
+
+function deleteFile(filename) {
+	if (confirm("Do you really want to delete " + filename + "?")) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				alert(this.responseText);
+				reloadList();
+			}
+		}
+		xhttp.open("GET", "delete.php?file=" + filename, true);
+		xhttp.send();
+	}
 }
 
 function compareDataRow(otherArray) {
@@ -70,8 +93,10 @@ function compareDataRow(otherArray) {
 function idInTable(file) {
 	var table = document.getElementById("filelist").rows;
 	var fileCell = idInOrder("name");
-	for (i = 0; i < table.length; i++)
-		if (table[i].cells[fileCell] == file) return i;
+	console.log("file cell: " + fileCell);
+	for (i = 0; i < table.length; i++) {
+		if (table[i].cells[fileCell].innerHTML == file) return i;
+	}
 	return -1;
 }
 
