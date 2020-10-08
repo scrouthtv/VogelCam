@@ -25,7 +25,7 @@ foreach ($files as $index => $file) {
 		$data[] = $stat;
 	}
 }
-$data[0]["amount"] = $index + 1;
+$data[0]["amount"] = $index - 1; // -2 because of '.' and '..', +1 because counting starts at 0
 echo json_encode($data);
 
 ?>

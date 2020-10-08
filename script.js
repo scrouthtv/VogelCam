@@ -2,6 +2,8 @@
 
 var currentData = [];
 
+const tableID = "filelist";
+
 function reloadList() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -12,9 +14,8 @@ function reloadList() {
 				if (row.hasOwnProperty("name")) data.push(row);
 				else meta = row;
 			});
-			console.log(meta);
 
-			const table = document.getElementById("filelist");
+			const table = document.getElementById(tableID);
 
 			var removed = currentData.filter(compareDataRow(data));
 			removed.forEach(remove => {
@@ -34,6 +35,39 @@ function reloadList() {
 	};
 	xhttp.open("GET", "list.php", true);
 	xhttp.send();
+}
+
+/**
+ * With this approach, to sort by the *actual* date / size,
+ * one can't use the -parsed fields
+ * TODO: if a parsed field is set as sorting key, replace
+ * it with the original value, we can retrieve via the file name
+ * from currentData.
+ * Also, if any key is duplicate, it just gets deleted.
+ */
+function sortTableBy(descending, key) {
+	const table = document.getElementById(tableID);
+	var rows = [];
+	var keys = [];
+	var keyID = idInOrder(key);
+	var length = table.rows.length - 1; // ignore the tfoot
+	for (i = 1; i < length; i++) { // ignore the thead
+		var row = table.rows[1];
+		var key = row.cells[keyID].innerHTML;
+		keys.push(key);
+		rows[key] = row;
+		table.deleteRow(1);
+	}
+
+	keys.sort();
+	//for (const entry of Object.entries(rows)) {
+		//console.log(entry);
+	//}
+	keys.forEach(key => {
+		console.log(rows[key]);
+	});
+	
+	// TODO reinsert them into the table
 }
 
 const prefixes = {
@@ -69,7 +103,7 @@ function humanPrefix(size) {
 }
 
 function setTableFoot(meta) {
-	const table = document.getElementById("filelist");
+	const table = document.getElementById(tableID);
 	table.deleteTFoot();
 	var tfoot = table.createTFoot();
 	var row = tfoot.insertRow(0);
@@ -84,15 +118,29 @@ function setTableFoot(meta) {
 }
 
 function setTableHead() {
-	const table = document.getElementById("filelist");
+	const table = document.getElementById(tableID);
 	table.deleteTHead();
 	var thead = table.createTHead();
 	var row = thead.insertRow(0);
 	currentOrder.forEach(column => {
 		var cell = row.insertCell(-1);
-		cell.appendChild(document.createTextNode(column));
+		var text = document.createTextNode(column);
+		var br = document.createElement("br");
+
+		var down = document.createElement("a");
+		down.appendChild(document.createTextNode("\u25bc"));
+		down.href = "javascript:sortTableBy(true, '" + column + "');";
+		var up = document.createElement("a");
+		up.appendChild(document.createTextNode("\u25b2"));
+		up.href = "javascript:sortTableBy(false, '" + column + "')"
+
+		cell.appendChild(down);
+		cell.appendChild(up);
+		cell.appendChild(br);
+		cell.appendChild(text);
 	});
 	var cell = row.insertCell(-1);
+	cell.appendChild(document.createElement("br"));
 	cell.appendChild(document.createTextNode("delete"));
 }
 
@@ -103,7 +151,7 @@ function setTableHead() {
 // the animation would be another table on top that
 // is floating and has this one column
 // and is attached to the mouse
-	//const table = document.getElementById("filelist").rows;
+	//const table = document.getElementById(tableID).rows;
 	//for (i = 0; i < table.length; i++) {
 		//var row = table[i].cells;
 		//console.log(row[a]);
@@ -192,7 +240,7 @@ function compareDataRow(otherArray) {
  * If not found, -1 is returned.
  */
 function idInTable(file) {
-	var table = document.getElementById("filelist").rows;
+	var table = document.getElementById(tableID).rows;
 	var fileCell = idInOrder("name");
 	console.log("file cell: " + fileCell);
 	for (i = 0; i < table.length; i++) {
