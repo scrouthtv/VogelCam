@@ -6,13 +6,18 @@ function reloadList() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			const data = JSON.parse(this.responseText);
+			const data = [];
+			var meta;
+			JSON.parse(this.responseText).forEach(row => {
+				if (row.hasOwnProperty("name")) data.push(row);
+				else meta = row;
+			});
+			console.log(meta);
+
 			const table = document.getElementById("filelist");
 
 			var removed = currentData.filter(compareDataRow(data));
 			removed.forEach(remove => {
-				console.log(remove.name);
-				console.log(idInTable(remove.name));
 				table.deleteRow(idInTable(remove.name));
 			});
 
@@ -23,11 +28,59 @@ function reloadList() {
 			});
 
 			setTableHead();
+			setTableFoot(meta);
 			currentData = data;
 		}
 	};
 	xhttp.open("GET", "list.php", true);
 	xhttp.send();
+}
+
+const prefixes = {
+	0 : "",
+	3 : "k",
+	6 : "M",
+	9 : "G",
+	12 : "T",
+	15 : "P"
+}
+
+const largestReadableSize = 900;
+
+function formatSizeWithPower(size, power) {
+	size = size / Math.pow(1024, power/3);
+	return (Math.round(size * 100) / 100) + " " + prefixes[power] + "B";
+}
+
+function formatSize(size) {
+	return formatSizeWithPower(size, humanPrefix(size));
+}
+
+/**
+ * Returns a power with which this size would be readable. Is always a multiple of 3.
+ */
+function humanPrefix(size) {
+	var power = 0;
+	while (size > largestReadableSize) {
+		size = size / 1024;
+		power += 3;
+	}
+	return power;
+}
+
+function setTableFoot(meta) {
+	const table = document.getElementById("filelist");
+	table.deleteTFoot();
+	var tfoot = table.createTFoot();
+	var row = tfoot.insertRow(0);
+	var cell = row.insertCell(0);
+	cell.colspan = currentOrder.length + 1; // spans the entire table
+	cell.classList.add("meta");
+	var content = meta.folder + ": " + meta.amount + " files";
+	var power = humanPrefix(meta.total);
+	content += " (" + formatSizeWithPower(meta.free, power);
+	content += " / " + formatSizeWithPower(meta.total, power) + " free)";
+	cell.appendChild(document.createTextNode(content));
 }
 
 function setTableHead() {
