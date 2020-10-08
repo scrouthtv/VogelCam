@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>VogelCam Dateiliste</title>
+		<script type="text/javascript">
+			// these pseudo-keys are supported:
+			//  - ID the id that was given this entry
+			//  - name the file name
+			//  - type the mime type -- if enabled in the config.php
+			//  - [atime|mtime|ctime]-parsed: atime / mtime / ctime parsed as a date
+			var currentOrder = ["name", "size", "mtime"];
+		</script>
+		<script src="script.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<button id="reloadBtn" onclick="reloadList();">Neu laden</button>
+		<table id="filelist">
+			<thead>
+
+			</thead>
+		</table>
+	</body>
+</html>
