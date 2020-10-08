@@ -22,11 +22,25 @@ function reloadList() {
 				setTableRow(row, add);
 			});
 
+			setTableHead();
 			currentData = data;
 		}
 	};
 	xhttp.open("GET", "list.php", true);
 	xhttp.send();
+}
+
+function setTableHead() {
+	const table = document.getElementById("filelist");
+	table.deleteTHead();
+	var thead = table.createTHead();
+	var row = thead.insertRow(0);
+	currentOrder.forEach(column => {
+		var cell = row.insertCell(-1);
+		cell.appendChild(document.createTextNode(column));
+	});
+	var cell = row.insertCell(-1);
+	cell.appendChild(document.createTextNode("delete"));
 }
 
 //function swapCells(a, b) {
@@ -62,6 +76,7 @@ function setTableRow(row, data) {
 	var a = document.createElement("a");
 	a.appendChild(document.createTextNode("[x]"));
 	a.href = "javascript:deleteFile('" + data.name + "');";
+	cell.classList.add("entry-delete");
 	cell.appendChild(a);
 	return row;
 }

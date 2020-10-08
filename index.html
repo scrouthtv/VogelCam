@@ -9,14 +9,13 @@
 			//  - type the mime type -- if enabled in the config.php
 			//  - [atime|mtime|ctime]-parsed: atime / mtime / ctime parsed as a date
 			// NEVER REMOVE name OR BAD THINGS WILL HAPPEN
+			// NEVER CHANGE THIS VARIABLE DIRECTLY WHEN THE WEBSITE IS RUNNING
 			var currentOrder = ["name", "size", "mtime"];
 		</script>
 		<script src="script.js" type="text/javascript"></script>
 	</head>
 	<body onload="javascript:reloadList();">
-		<button id="reloadBtn" onclick="reloadList();">Neu laden</button>
-		<table id="filelist">
-			<thead></thead>
-		</table>
+		<table id="filelist"></table>
+		<button id="reloadBtn" onclick="reloadList();">Reload</button>
 	</body>
 </html>
