@@ -1,3 +1,5 @@
+// TODO print free space, total size, human readable size, pseudo keys
+
 var currentData = [];
 
 function reloadList() {
