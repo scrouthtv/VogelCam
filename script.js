@@ -118,11 +118,44 @@ function setTableHead() {
 	//}
 //}
 
+const monthString = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dev"];
+
+/**
+ * Parses a *UNIX* timestamp. These are in seconds since 1970.
+ * JavaScript timestamps are in milliseconds since 1970.
+ */
+function parseUnixTimestamp(timestamp) {
+	const time = new Date(timestamp * 1000);
+
+	text = monthString[time.getMonth()] + " ";
+	text += padWithZeros(time.getDate(), 2) + " ";
+	text += padWithZeros(time.getHours(), 2) + ":";
+	text += padWithZeros(time.getMinutes(), 2);
+
+	return text;
+}
+
+function padWithZeros(number, zeros) {
+	while (number.length < zeros) number = "0" + number;
+	return number;
+}
+
 function setTableRow(row, data) {
 	currentOrder.forEach(col => {
 		var cell = row.insertCell(-1);
-		// TODO pseudo-keys will be here
-		cell.appendChild(document.createTextNode(data[col]));
+		var text = "";
+		switch (col) {
+			case 'atime-parsed': case 'mtime-parsed': case 'ctime-parsed': 
+				text = parseUnixTimestamp(data[col.substring(0, col.indexOf("-"))]);
+				break;
+			case 'size-parsed':
+				text = formatSize(data.size);
+				break;
+			default:
+				text = data[col];
+				break;
+		}
+		cell.appendChild(document.createTextNode(text));
 		cell.classList.add("entry-" + col);
 	});
 	var cell = row.insertCell(-1);
