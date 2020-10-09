@@ -1,6 +1,6 @@
-// TODO print free space, total size, human readable size, pseudo keys
-
 var currentData = [];
+var currentSortKey = "name";
+var currentSortDesc = false;
 
 const tableID = "filelist";
 
@@ -15,7 +15,7 @@ function reloadList() {
 				else meta = row;
 			});
 
-			const table = document.getElementById(tableID);
+			const table = document.getElementById(tableID).tBodies[0];
 
 			var removed = currentData.filter(compareDataRow(data));
 			removed.forEach(remove => {
@@ -28,7 +28,7 @@ function reloadList() {
 				setTableRow(row, add);
 			});
 
-			setTableHead();
+			sortTableBy(currentSortDesc, currentSortKey);
 			setTableFoot(meta);
 			currentData = data;
 		}
@@ -46,29 +46,32 @@ function reloadList() {
  * Also, if any key is duplicate, it just gets deleted.
  */
 function sortTableBy(descending, key) {
+	currentSortKey = key;
+	currentSortDesc = descending;
+
 	const secondaryKey = "name";
 
-	const table = document.getElementById(tableID);
+	const table = document.getElementById(tableID).tBodies[0];
 	var rows = [];
 	var keys = [];
 	const keyID = idInOrder(key);
 	const secondaryID = idInOrder(secondaryKey);
 	const filenameID = idInOrder("name");
-	var length = table.rows.length - 1; // ignore the tfoot
-	for (i = 1; i < length; i++) { // ignore the thead
-		var row = table.rows[1];
+	const length = table.rows.length;
+	for (i = 0; i < length; i++) { // ignore the thead
+		var row = table.rows[0];
 		var rowKey;
 		if (key.endsWith("-parsed")) {
 			const filename = row.cells[filenameID].innerHTML;
 			const dataRow = currentData[filenameToCurrentDataRow(filename)];
-			rowKey = dataRow[key.replace("-parsed", "")];
+			if (typeof dataRow !== 'undefined') rowKey = dataRow[key.replace("-parsed", "")];
 		} else {
 			rowKey = row.cells[keyID].innerHTML;
 		}
 		rowKey += ":" + row.cells[secondaryID].innerHTML;
 		keys.push(rowKey);
 		rows[rowKey] = row;
-		table.deleteRow(1);
+		table.deleteRow(0);
 	}
 
 	if (key === "name") {
@@ -83,13 +86,13 @@ function sortTableBy(descending, key) {
 			else return e1.localeCompare(e2);
 		});
 	}
-	if (descending) keys.reverse();
-	keys.forEach(key => {
-		copyTableRow(rows[key], table.insertRow(table.rows.length - 1));
-	});
 
-	setTableHead();
-	table.rows[0].cells[keyID].childNodes[descending ? 0 : 1].classList.add("inactive");
+	if (descending) keys.reverse();
+
+	keys.forEach(key => {
+		var row = table.insertRow(-1);
+		copyTableRow(rows[key], row);
+	document.getElementById(tableID).tHead.rows[0].cells[keyID].childNodes[descending ? 0 : 1].classList.add("inactive");
 }
 
 /**
@@ -104,8 +107,7 @@ function filenameToCurrentDataRow(filename) {
 function copyTableRow(template, target) {
 	var cells = template.cells;
 	target.classList = template.classList;
-	var i;
-	for (i = 0; i < cells.length; i++) {
+	for (var i = 0; i < cells.length; i++) {
 		var templateCell = cells[i];
 		var targetCell = target.insertCell(-1);
 		targetCell.innerHTML = templateCell.innerHTML;
@@ -147,9 +149,9 @@ function humanPrefix(size) {
 
 function setTableFoot(meta) {
 	const table = document.getElementById(tableID);
-	table.deleteTFoot();
+	while (document.getElementsByClassName("meta").length > 0) table.deleteRow(-1);
 	var tfoot = table.createTFoot();
-	var row = tfoot.insertRow(0);
+	var row = tfoot.insertRow(-1);
 	var cell = row.insertCell(0);
 	cell.colSpan = currentOrder.length + 1; // spans the entire table
 	cell.classList.add("meta");
@@ -161,10 +163,9 @@ function setTableFoot(meta) {
 }
 
 function setTableHead() {
-	const table = document.getElementById(tableID);
-	table.deleteTHead();
-	var thead = table.createTHead();
-	var row = thead.insertRow(0);
+	const table = document.getElementById(tableID).tHead;
+	while (table.rows.length > 0) table.deleteRow(0);
+	var row = table.insertRow(0);
 	currentOrder.forEach(column => {
 		var cell = row.insertCell(-1);
 		var text = document.createTextNode(column);
@@ -287,7 +288,6 @@ function compareDataRow(otherArray) {
 function idInTable(file) {
 	var table = document.getElementById(tableID).rows;
 	var fileCell = idInOrder("name");
-	console.log("file cell: " + fileCell);
 	for (i = 0; i < table.length; i++) {
 		if (table[i].cells[fileCell].innerHTML == file) return i;
 	}

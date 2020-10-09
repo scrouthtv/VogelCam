@@ -18,7 +18,7 @@ thead {
 }
 
 thead>tr, thead>tr>td {
-	border-bottom: 3px solid #ddd;
+	border-bottom: 3px solid #2196f3;
 }
 
 tr:nth-child(even) {
