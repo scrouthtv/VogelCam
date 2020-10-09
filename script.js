@@ -46,10 +46,14 @@ function reloadList() {
  * Also, if any key is duplicate, it just gets deleted.
  */
 function sortTableBy(descending, key) {
+	const secondaryKey = "name";
+
 	const table = document.getElementById(tableID);
 	var rows = [];
 	var keys = [];
 	const keyID = idInOrder(key);
+	const secondaryID = idInOrder(secondaryKey);
+	console.log(secondaryID);
 	const filenameID = idInOrder("name");
 	var length = table.rows.length - 1; // ignore the tfoot
 	for (i = 1; i < length; i++) { // ignore the thead
@@ -62,6 +66,8 @@ function sortTableBy(descending, key) {
 		} else {
 			rowKey = row.cells[keyID].innerHTML;
 		}
+		rowKey += ":" + row.cells[secondaryID].innerHTML;
+		//console.log(rowKey);
 		keys.push(rowKey);
 		rows[rowKey] = row;
 		table.deleteRow(1);
@@ -71,11 +77,19 @@ function sortTableBy(descending, key) {
 		// string compare for name column
 		keys.sort();
 	} else {
-		// numerical sort for all other keys
-		keys.sort((e1, e2) => e1 - e2);
+		// numerical sort for all other keys, ignore secondary key when sorting
+		keys.sort((e1, e2) => {
+			var e1num = e1.substring(0, e1.indexOf(":"));
+			var e2num = e2.substring(0, e2.indexOf(":"));
+			if ((e1num - e2num) != 0) return e1num - e2num;
+			else return e1.localeCompare(e2);
+		});
 	}
+	console.log(keys);
 	if (descending) keys.reverse();
+	console.log(keys);
 	keys.forEach(key => {
+		console.log(key);
 		copyTableRow(rows[key], table.insertRow(table.rows.length - 1));
 	});
 }
