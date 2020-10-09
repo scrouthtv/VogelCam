@@ -92,6 +92,9 @@ function sortTableBy(descending, key) {
 	keys.forEach(key => {
 		var row = table.insertRow(-1);
 		copyTableRow(rows[key], row);
+	});
+
+	setTableHead();
 	document.getElementById(tableID).tHead.rows[0].cells[keyID].childNodes[descending ? 0 : 1].classList.add("inactive");
 }
 
