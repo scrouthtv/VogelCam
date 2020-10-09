@@ -31,19 +31,30 @@ function reloadList() {
 			sortTableBy(currentSortDesc, currentSortKey);
 			setTableFoot(meta);
 			currentData = data;
+			setTheme();
 		}
 	};
 	xhttp.open("GET", "list.php", true);
 	xhttp.send();
 }
 
+const availThemes = ["dark", "light"];
+/**
+ * Adds the currentTheme as a class to all elements.
+ * Removes all themes from availThemes.
+ */
+function setTheme() {
+	const elementList = document.getElementsByTagName("*");
+	for (var i = 0; i < elementList.length; i++) {
+		var elem = elementList[i];
+		availThemes.forEach(aTheme => elem.classList.remove(aTheme));
+		elem.classList.add(currentTheme);
+	}
+}
+
 /**
  * With this approach, to sort by the *actual* date / size,
  * one can't use the -parsed fields
- * TODO: if a parsed field is set as sorting key, replace
- * it with the original value, we can retrieve via the file name
- * from currentData.
- * Also, if any key is duplicate, it just gets deleted.
  */
 function sortTableBy(descending, key) {
 	currentSortKey = key;
@@ -155,7 +166,9 @@ function setTableFoot(meta) {
 	while (document.getElementsByClassName("meta").length > 0) table.deleteRow(-1);
 	var tfoot = table.createTFoot();
 	var row = tfoot.insertRow(-1);
+	row.classList.add(currentTheme);
 	var cell = row.insertCell(0);
+	cell.classList.add(currentTheme);
 	cell.colSpan = currentOrder.length + 1; // spans the entire table
 	cell.classList.add("meta");
 	var content = meta.folder + ": " + meta.amount + " files";
@@ -169,6 +182,7 @@ function setTableHead() {
 	const table = document.getElementById(tableID).tHead;
 	while (table.rows.length > 0) table.deleteRow(0);
 	var row = table.insertRow(0);
+	row.classList.add(currentTheme);
 	currentOrder.forEach(column => {
 		var cell = row.insertCell(-1);
 		var text = document.createTextNode(column);
@@ -177,15 +191,18 @@ function setTableHead() {
 		var down = document.createElement("a");
 		down.appendChild(document.createTextNode("\u25bc"));
 		down.href = "javascript:sortTableBy(true, '" + column + "');";
+		down.classList.add(currentTheme);
 		var up = document.createElement("a");
 		up.appendChild(document.createTextNode("\u25b2"));
 		up.href = "javascript:sortTableBy(false, '" + column + "')"
+		up.classList.add(currentTheme);
 
 		cell.appendChild(down);
 		cell.appendChild(up);
 		cell.appendChild(br);
 		cell.appendChild(text);
 		cell.classList.add("head-" + column);
+		cell.classList.add(currentTheme);
 	});
 	var cell = row.insertCell(-1);
 	cell.appendChild(document.createElement("br"));

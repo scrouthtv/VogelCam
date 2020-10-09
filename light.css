@@ -1,0 +1,41 @@
+:root.light {
+	--fg-color: #3e2723;
+}
+
+body.light {
+	background-color: #dcdcdc;
+	color: var(--fg-color);
+}
+
+table.light {
+	background-color: #dedede;
+}
+
+a.light {
+	color: #1976d2;
+}
+
+thead>tr.light, thead>tr>td.light {
+	border-bottom: 3px solid #d50000;
+}
+
+tr:nth-child(even).light {
+	background-color: #f2f2f2;
+}
+
+.data-row:hover.light {
+	background-color: #00695c;
+}
+
+.inactive.light {
+	color: var(--fg-color);
+}
+
+button.light {
+	background-color: #aaa;
+	color: var(--fg-color);
+}
+
+button:hover.light {
+	background-color: #f57f17;
+}

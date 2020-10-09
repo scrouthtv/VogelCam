@@ -25,13 +25,26 @@
 			// NEVER REMOVE name OR BAD THINGS WILL HAPPEN
 			// please also fully reload the website after changing this value
 			var currentOrder = ["name", "size-parsed", "mtime-parsed"];
+			var currentTheme = "light";
+
+			function onload() {
+				reloadList();
+			}
+
+			function setDarkMode() {
+				if (document.getElementById("themeSwitch").checked) currentTheme = "dark";
+				else currentTheme = "light";
+				setTheme();
+			}
 		</script>
 		<script src="script.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="light.css" />
 		<link rel="stylesheet" type="text/css" href="dark.css" />
 	</head>
-	<body onload="javascript:reloadList();">
+	<body onload="javascript:onload();">
 		<div id="content">
+			<label class="themeSwitch"><input id="themeSwitch" type="checkbox" onchange="setDarkMode();" /><span class="slider"></span></label>
 			<table id="filelist">
 				<thead></thead>
 				<tbody></tbody>
