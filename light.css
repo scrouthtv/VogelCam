@@ -24,7 +24,7 @@ tr:nth-child(even).light {
 }
 
 .data-row:hover.light {
-	background-color: #00695c;
+	background-color: #4db6ac;
 }
 
 .inactive.light {

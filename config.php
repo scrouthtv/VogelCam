@@ -1,4 +1,4 @@
 <?php
-$FOLDER = "/home/foo/";
+$FOLDER = "/home/bar/";
 $CHECK_MIME = false;
 ?>
