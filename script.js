@@ -103,6 +103,7 @@ function filenameToCurrentDataRow(filename) {
 
 function copyTableRow(template, target) {
 	var cells = template.cells;
+	target.classList = template.classList;
 	var i;
 	for (i = 0; i < cells.length; i++) {
 		var templateCell = cells[i];
@@ -180,6 +181,7 @@ function setTableHead() {
 		cell.appendChild(up);
 		cell.appendChild(br);
 		cell.appendChild(text);
+		cell.classList.add("head-" + column);
 	});
 	var cell = row.insertCell(-1);
 	cell.appendChild(document.createElement("br"));
@@ -254,6 +256,7 @@ function setTableRow(row, data) {
 	a.href = "javascript:deleteFile('" + data.name + "');";
 	cell.classList.add("entry-delete");
 	cell.appendChild(a);
+	row.classList.add("data-row");
 	return row;
 }
 

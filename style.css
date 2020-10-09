@@ -1,0 +1,53 @@
+body {
+	/*font-family: Palatino Linotype, serif;*/
+	font-family: "Fira Mono", Consolas, monospace;
+}
+
+table {
+	min-width: 40%;
+	border: 0px;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 3px;
+}
+
+thead {
+	font-weight: bold;
+}
+
+thead>tr, thead>tr>td {
+	border-bottom: 3px solid #ddd;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.data-row:hover {
+	background-color: #b2dfdb;
+}
+
+tr>td.entry-name tr>td.head-name {
+	text-align: left;
+}
+
+tr>td:not(.entry-name):not(.head-name):not(.meta) {
+	text-align: center;
+	padding-left: 5px;
+}
+
+.meta {
+	text-align: right;
+	font-style: italic;
+}
+
+tfoot>tr>td {
+	padding-top: 5px;
+}
+
+.inactive {
+	color: black;
+	text-decoration: none;
+}
