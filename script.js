@@ -49,21 +49,44 @@ function sortTableBy(descending, key) {
 	const table = document.getElementById(tableID);
 	var rows = [];
 	var keys = [];
-	var keyID = idInOrder(key);
+	const keyID = idInOrder(key);
+	const filenameID = idInOrder("name");
 	var length = table.rows.length - 1; // ignore the tfoot
 	for (i = 1; i < length; i++) { // ignore the thead
 		var row = table.rows[1];
-		var key = row.cells[keyID].innerHTML;
-		keys.push(key);
-		rows[key] = row;
+		var rowKey;
+		if (key.endsWith("-parsed")) {
+			const filename = row.cells[filenameID].innerHTML;
+			const dataRow = currentData[filenameToCurrentDataRow(filename)];
+			rowKey = dataRow[key.replace("-parsed", "")];
+		} else {
+			rowKey = row.cells[keyID].innerHTML;
+		}
+		keys.push(rowKey);
+		rows[rowKey] = row;
 		table.deleteRow(1);
 	}
 
-	keys.sort();
+	if (key === "name") {
+		// string compare for name column
+		keys.sort();
+	} else {
+		// numerical sort for all other keys
+		keys.sort((e1, e2) => e1 - e2);
+	}
 	if (descending) keys.reverse();
 	keys.forEach(key => {
 		copyTableRow(rows[key], table.insertRow(table.rows.length - 1));
 	});
+}
+
+/**
+ * Returns -1 if not found.
+ */
+function filenameToCurrentDataRow(filename) {
+	for (var i = 0; i < currentData.length; i++)
+		if (currentData[i].name === filename) return i;
+	return -1;
 }
 
 function copyTableRow(template, target) {
@@ -73,6 +96,7 @@ function copyTableRow(template, target) {
 		var templateCell = cells[i];
 		var targetCell = target.insertCell(-1);
 		targetCell.innerHTML = templateCell.innerHTML;
+		targetCell.classList = templateCell.classList;
 	}
 }
 
