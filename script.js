@@ -150,7 +150,7 @@ function setTableFoot(meta) {
 	var tfoot = table.createTFoot();
 	var row = tfoot.insertRow(0);
 	var cell = row.insertCell(0);
-	cell.colspan = currentOrder.length + 1; // spans the entire table
+	cell.colSpan = currentOrder.length + 1; // spans the entire table
 	cell.classList.add("meta");
 	var content = meta.folder + ": " + meta.amount + " files";
 	var power = humanPrefix(meta.total);
