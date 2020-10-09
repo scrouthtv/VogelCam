@@ -53,7 +53,6 @@ function sortTableBy(descending, key) {
 	var keys = [];
 	const keyID = idInOrder(key);
 	const secondaryID = idInOrder(secondaryKey);
-	console.log(secondaryID);
 	const filenameID = idInOrder("name");
 	var length = table.rows.length - 1; // ignore the tfoot
 	for (i = 1; i < length; i++) { // ignore the thead
@@ -67,7 +66,6 @@ function sortTableBy(descending, key) {
 			rowKey = row.cells[keyID].innerHTML;
 		}
 		rowKey += ":" + row.cells[secondaryID].innerHTML;
-		//console.log(rowKey);
 		keys.push(rowKey);
 		rows[rowKey] = row;
 		table.deleteRow(1);
@@ -85,13 +83,13 @@ function sortTableBy(descending, key) {
 			else return e1.localeCompare(e2);
 		});
 	}
-	console.log(keys);
 	if (descending) keys.reverse();
-	console.log(keys);
 	keys.forEach(key => {
-		console.log(key);
 		copyTableRow(rows[key], table.insertRow(table.rows.length - 1));
 	});
+
+	setTableHead();
+	table.rows[0].cells[keyID].childNodes[descending ? 0 : 1].classList.add("inactive");
 }
 
 /**
