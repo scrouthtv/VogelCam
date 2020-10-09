@@ -1,4 +1,5 @@
 <?php
-$FOLDER = "/home/bar/";
+$FOLDER = "../";
+//$FOLDER = "/var/cache/pacman/pkg/";
 $CHECK_MIME = false;
 ?>
