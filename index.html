@@ -28,13 +28,17 @@
 		</script>
 		<script src="script.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="dark.css" />
 	</head>
 	<body onload="javascript:reloadList();">
-		<table id="filelist">
-			<thead></thead>
-			<tbody></tbody>
-			<tfoot></tfoot>
-		</table>
-		<button id="reloadBtn" onclick="reloadList();">Reload</button>
+		<div id="content">
+			<table id="filelist">
+				<thead></thead>
+				<tbody></tbody>
+				<tfoot></tfoot>
+			</table>
+			<br />
+			<button id="reloadBtn" onclick="reloadList();">Reload</button>
+		</div>
 	</body>
 </html>
