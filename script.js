@@ -60,14 +60,20 @@ function sortTableBy(descending, key) {
 	}
 
 	keys.sort();
-	//for (const entry of Object.entries(rows)) {
-		//console.log(entry);
-	//}
+	if (descending) keys.reverse();
 	keys.forEach(key => {
-		console.log(rows[key]);
+		copyTableRow(rows[key], table.insertRow(table.rows.length - 1));
 	});
-	
-	// TODO reinsert them into the table
+}
+
+function copyTableRow(template, target) {
+	var cells = template.cells;
+	var i;
+	for (i = 0; i < cells.length; i++) {
+		var templateCell = cells[i];
+		var targetCell = target.insertCell(-1);
+		targetCell.innerHTML = templateCell.innerHTML;
+	}
 }
 
 const prefixes = {
