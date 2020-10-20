@@ -7,7 +7,7 @@ body.light {
 	color: var(--fg-color);
 }
 
-table.light {
+#filelist table.light {
 	background-color: #dedede;
 }
 
@@ -15,11 +15,11 @@ a.light {
 	color: #1976d2;
 }
 
-thead>tr.light, thead>tr>td.light {
+#filelist thead>tr.light, thead>tr>td.light {
 	border-bottom: 3px solid #d50000;
 }
 
-tr:nth-child(even).light {
+#filelist tr:nth-child(even).light {
 	background-color: #f2f2f2;
 }
 
@@ -38,4 +38,8 @@ button.light {
 
 button:hover.light {
 	background-color: #f57f17;
+}
+
+#previewPane.light {
+	background-color: #aaa;
 }

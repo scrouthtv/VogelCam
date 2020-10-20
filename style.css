@@ -12,7 +12,7 @@ body {
 	width: 80%;
 }
 
-table {
+#filelist {
 	width: 100%;
 	border: 0px;
 	border-collapse: collapse;
@@ -25,29 +25,29 @@ table {
 	box-shadow: 0px 0px 22px 0px rgba(0,0,0,0.95);
 }
 
-body, table, a, tr:nth-child(even), .data-row:hover, .inactive, button, button:hover {
+body, #filelist, a, tr:nth-child(even), .data-row:hover, .inactive, button, button:hover {
 	transition: color .2s, background-color .4s;
 }
 
-thead>tr, thead>tr>td {
+#filelist thead>tr, thead>tr>td {
 	transition-duration: .4s;
 	transition-property: border;
 }
 
-td {
+#filelist td {
 	padding: 10px 8px 10px 8px;
 	/*padding: 10px;*/
 }
 
-thead {
+#filelist thead {
 	font-weight: bold;
 }
 
-tr>td.entry-name tr>td.head-name {
+#filelist tr>td.entry-name tr>td.head-name {
 	text-align: left;
 }
 
-tr>td:not(.entry-name):not(.head-name):not(.meta) {
+#filelist tr>td:not(.entry-name):not(.head-name):not(.meta) {
 	text-align: center;
 }
 
@@ -132,14 +132,41 @@ input:checked + .slider:before {
 
 #previewPane {
 	position: absolute;
-	width: 80%;
+	width: 90%;
 	height: 80%;
 	left: 50%;
+	top: 10%;
+	z-index: 1;
 	transform: translate(-50%);
-	background-color: red;
 	display: none;
+	-webkit-box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.95);
+	-moz-box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.95);
+	box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.95);
+	border-radius: 5px;
 }
 
 #previewPane iframe {
+	position: absolute;
+	width: 95%;
+	height: 80%;
+	margin-top: 2.5%;
+	left: 50%;
+	z-index: 1;
+	transform: translate(-50%);
+	border: none;
+}
+
+#previewPaneButtons	{
+	position: absolute;
+	top: 90%;
+	width: 100%;
+	display: flex;
+}
+
+#previewPaneButtons:nth-child {
+	background-color: margin-left: 0px;
+}
+
+#previewPaneButtons table {
 	margin: auto;
 }

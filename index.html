@@ -29,7 +29,7 @@
 
 			function onload() {
 				reloadList();
-				//openPreview("OrphanBlack.mp4");
+				openPreview("OrphanBlack.mp4");
 			}
 
 			function setDarkMode() {
@@ -45,7 +45,15 @@
 		<link rel="stylesheet" type="text/css" href="dark.css" />
 	</head>
 	<body onload="javascript:onload();">
-		<div id="previewPane"></div>
+		<div id="previewPane">
+			<div id="previewPaneButtons">
+				<table><tr>
+						<td><button id="previewClose">close</button></td>
+						<td width="100px"></td>
+						<td><button id="delete">delete</button></td>
+					</tr></table>
+			</div>
+		</div>
 		<label class="themeSwitch"><input id="themeSwitch" type="checkbox" onchange="setDarkMode();" /><span class="slider"></span></label>
 		<div id="content">
 			<table id="filelist">

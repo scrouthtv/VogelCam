@@ -7,7 +7,7 @@ body.dark {
 	color: var(--fg-color);
 }
 
-table.dark {
+#filelist table.dark {
 	background-color: #212121;
 }
 
@@ -15,11 +15,11 @@ a.dark {
 	color: #64b5f6;
 }
 
-thead>tr.dark, thead>tr>td.dark {
+#filelist thead>tr.dark, thead>tr>td.dark {
 	border-bottom: 3px solid #ff1744;
 }
 
-tr:nth-child(even).dark {
+#filelist tr:nth-child(even).dark {
 	background-color: #0d0d0d;
 }
 
@@ -38,4 +38,8 @@ button.dark {
 
 button:hover.dark {
 	background-color: #f57f17;
+}
+
+#previewPane.dark {
+	background-color: #555;
 }
