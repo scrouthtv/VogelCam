@@ -29,7 +29,6 @@
 
 			function onload() {
 				reloadList();
-				openPreview("OrphanBlack.mp4");
 			}
 
 			function setDarkMode() {
@@ -48,9 +47,9 @@
 		<div id="previewPane">
 			<div id="previewPaneButtons">
 				<table><tr>
-						<td><button id="previewClose">close</button></td>
+						<td><button id="previewClose" onclick="javascript:closePreview();">close</button></td>
 						<td width="100px"></td>
-						<td><button id="delete">delete</button></td>
+						<td><button id="delete" onclick="javascript:deletePreviewFile();">delete</button></td>
 					</tr></table>
 			</div>
 		</div>

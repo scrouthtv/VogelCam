@@ -256,20 +256,29 @@ function padWithZeros(number, zeros) {
 function setTableRow(row, data) {
 	currentOrder.forEach(col => {
 		var cell = row.insertCell(-1);
-		var text = "";
-		switch (col) {
-			case 'atime-parsed': case 'mtime-parsed': case 'ctime-parsed': 
-				text = parseUnixTimestamp(data[col.substring(0, col.indexOf("-"))]);
-				break;
-			case 'size-parsed':
-				text = formatSize(data.size);
-				break;
-			default:
-				text = data[col];
-				break;
+		if (col == "name") {
+			var a = document.createElement("a");
+			a.appendChild(document.createTextNode(data.name));
+			a.href = "javascript:openPreview('" + data.name + "');";
+			cell.classList.add("entry-name");
+			cell.appendChild(a);
+			text = "<a href='javascript:openPreview(" + data[col] + ");'>" + data[col] + "</a>";
+		} else {
+			var text = "";
+			switch (col) {
+				case 'atime-parsed': case 'mtime-parsed': case 'ctime-parsed': 
+					text = parseUnixTimestamp(data[col.substring(0, col.indexOf("-"))]);
+					break;
+				case 'size-parsed':
+					text = formatSize(data.size);
+					break;
+				default:
+					text = data[col];
+					break;
+			}
+			cell.classList.add("entry-" + col);
+			cell.appendChild(document.createTextNode(text));
 		}
-		cell.appendChild(document.createTextNode(text));
-		cell.classList.add("entry-" + col);
 	});
 	var cell = row.insertCell(-1);
 	var a = document.createElement("a");
